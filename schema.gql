@@ -1,0 +1,72 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Users {
+  _id: String!
+  email: String!
+  wallet: String!
+  lowercaseEmail: String!
+  timestamp: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type LoginResult {
+  user: Users!
+  token: String!
+}
+
+type Artist {
+  _id: String!
+  name: String!
+  description: String!
+  user: Users!
+  timestamp: DateTime!
+}
+
+type Album {
+  _id: String!
+  name: String!
+  cover: String!
+  artist: Artist!
+  timestamp: DateTime!
+}
+
+type CreateMusicResult {
+  name: String!
+  content: String!
+  hash: String!
+  album: Album!
+}
+
+type Query {
+  login(user: LoginUserInput!): LoginResult!
+  refreshToken: String!
+}
+
+input LoginUserInput {
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  create(createMusicInput: CreateMusicInput!): CreateMusicResult!
+  createUser(createUserInput: CreateUserInput!): LoginResult!
+}
+
+input CreateMusicInput {
+  name: String!
+  content: String!
+  hash: String!
+  albumId: String!
+}
+
+input CreateUserInput {
+  email: String!
+  password: String!
+  wallet: String!
+}

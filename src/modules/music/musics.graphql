@@ -1,0 +1,24 @@
+type Music {
+  # Example field (placeholder)
+  exampleField: Int
+}
+
+input CreateMusicInput {
+  # Example field (placeholder)
+  exampleField: Int
+}
+
+input UpdateMusicInput {
+  id: Int!
+}
+
+type Query {
+  musics: [Music]!
+  music(id: Int!): Music
+}
+
+type Mutation {
+  createMusic(createMusicInput: CreateMusicInput!): Music!
+  updateMusic(updateMusicInput: UpdateMusicInput!): Music!
+  removeMusic(id: Int!): Music
+}
