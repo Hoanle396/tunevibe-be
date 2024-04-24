@@ -17,6 +17,12 @@ import { Users } from './schemas/user.schema';
 import { Music } from './schemas/music.schema';
 import { Album } from './schemas/album.schema';
 import { Artist } from './schemas/artist.schema';
+import { Bio } from './schemas/bio.schema';
+import { Comment } from './schemas/comment.schema';
+import { Vote } from './schemas/vote.schema';
+import { PlayList } from './schemas/playlist.schema';
+import { Interaction } from './schemas/interaction.schema';
+import { Play } from './schemas/play.schema';
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
@@ -30,8 +36,20 @@ import { Artist } from './schemas/artist.schema';
         username: configService.mysqlUser,
         password: configService.mysqlPassword,
         database: configService.mysqlDatabase,
-        entities: [Users, Music, Album, Artist],
+        entities: [
+          Users,
+          Music,
+          Album,
+          Artist,
+          Bio,
+          Comment,
+          Vote,
+          PlayList,
+          Interaction,
+          Play,
+        ],
         synchronize: true,
+        logging: true,
       }),
       inject: [ConfigService],
     }),

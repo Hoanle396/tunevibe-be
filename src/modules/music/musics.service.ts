@@ -24,9 +24,12 @@ export class MusicsService {
         where: { name: ILike('%' + search + '%') },
         take: limit,
         skip: (page - 1) * limit,
+        relations: {
+          album: {
+            artist: true,
+          },
+        },
       });
-      console.log({ musics, counts });
-
       return {
         data: musics,
         meta: genMeta(counts, limit, page),
@@ -38,7 +41,18 @@ export class MusicsService {
 
   async findOne(id: number): Promise<Music> {
     try {
-      return await this.musicModel.findOne({ where: { id: id } });
+      return await this.musicModel.findOne({
+        where: { id: id },
+        relations: {
+          album: {
+            artist: true,
+          },
+          comment: true,
+          interaction: true,
+          vote: true,
+          play: true,
+        },
+      });
     } catch (error) {
       throw new BadRequestException(error);
     }

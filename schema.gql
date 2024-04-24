@@ -30,11 +30,36 @@ type Artist {
   updatedAt: DateTime!
 }
 
-type Album {
+type Vote {
   id: Float!
-  name: String!
-  cover: String!
-  artist: Artist!
+  music: Music!
+  rate: Float!
+  user: Users!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Comment {
+  id: Float!
+  music: Music!
+  content: String!
+  user: Users!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Interaction {
+  id: Float!
+  music: Music!
+  liked: Boolean!
+  user: Users!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Play {
+  id: Float!
+  count: Float!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -45,6 +70,20 @@ type Music {
   content: String!
   hash: String!
   album: Album!
+  vote: [Vote!]!
+  comment: [Comment!]!
+  interaction: [Interaction!]!
+  play: Play!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Album {
+  id: Float!
+  name: String!
+  cover: String!
+  artist: Artist!
+  musics: Music!
   createdAt: DateTime!
   updatedAt: DateTime!
 }

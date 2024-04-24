@@ -4,11 +4,18 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
+  OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Album } from './album.schema';
+import { Vote } from './vote.schema';
+import { Comment } from './comment.schema';
+import { Interaction } from './interaction.schema';
+import { Play } from './play.schema';
 
 @Entity()
 @ObjectType()
@@ -37,8 +44,25 @@ export class Music extends BaseEntity {
   hash: string;
 
   @Field(() => Album)
-  @ManyToOne(() => Album)
+  @ManyToOne(() => Album, (album) => album.musics)
   album: Album;
+
+  @Field(() => [Vote])
+  @OneToMany(() => Vote, (v) => v.music)
+  vote: Vote[];
+
+  @Field(() => [Comment])
+  @OneToMany(() => Comment, (v) => v.music)
+  comment: Comment[];
+
+  @Field(() => [Interaction])
+  @OneToMany(() => Interaction, (v) => v.music)
+  interaction: Interaction[];
+
+  @Field(() => Play)
+  @OneToOne(() => Play)
+  @JoinColumn()
+  play: Play;
 
   @Field(() => Date)
   @CreateDateColumn()

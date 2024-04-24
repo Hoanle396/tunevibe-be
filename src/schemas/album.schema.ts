@@ -6,10 +6,12 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Artist } from './artist.schema';
+import { Music } from './music.schema';
 
 @Entity()
 @ObjectType()
@@ -29,6 +31,10 @@ export class Album extends BaseEntity {
   @Field(() => Artist)
   @ManyToOne(() => Artist)
   artist: Artist;
+
+  @Field(() => Music)
+  @OneToMany(() => Music, (u) => u.album)
+  musics: Music[];
 
   @Field(() => Date)
   @CreateDateColumn()
