@@ -31,6 +31,7 @@
     "@nestjs/mongoose": "^10.0.6",
     "@nestjs/passport": "^10.0.3",
     "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/typeorm": "^10.0.2",
     "apollo-server-core": "^3.13.0",
     "apollo-server-express": "^3.13.0",
     "bcryptjs": "^2.4.3",
@@ -40,10 +41,12 @@
     "graphql": "^16.8.1",
     "joi": "^17.13.0",
     "mongoose": "^8.3.2",
+    "mysql2": "^3.9.7",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "reflect-metadata": "^0.2.0",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "typeorm": "^0.3.20"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",

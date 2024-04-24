@@ -1,3 +1,5 @@
+import { Meta } from '@/decorators/types';
+import { Music } from '@/schemas/music.schema';
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { Album } from 'src/schemas/album.schema';
 
@@ -16,15 +18,10 @@ export class CreateMusicInput {
 }
 
 @ObjectType()
-export class CreateMusicResult {
-  @Field(() => String)
-  name: string;
-  @Field(() => String || undefined)
-  content: string;
+export class ListMusicResult {
+  @Field(() => Meta)
+  meta: Meta;
 
-  @Field(() => String)
-  hash: string;
-
-  @Field(() => Album)
-  album: Album;
+  @Field(() => [Music!])
+  data: Music[];
 }

@@ -3,32 +3,48 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
 import { Users } from './user.schema';
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { Album } from './album.schema';
 
 export type ArtistDocument = Artist & Document;
 
-@Schema()
+@Entity()
 @ObjectType()
-export class Artist {
+export class Artist extends BaseEntity {
   @Field()
-  _id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Field(() => String)
-  @Prop({
-    required: true,
-  })
+  @Column({ nullable: false })
   name: string;
 
   @Field(() => String)
-  @Prop({ required: false })
+  @Column({ nullable: false })
   description: string;
 
   @Field(() => Users)
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+  @OneToOne(() => Users, (user) => user.id)
   user: Users;
 
-  @Field(() => Date)
-  @Prop()
-  timestamp: Date;
-}
+  @Field(() => [Album])
+  @OneToMany(() => Album, (post) => post.id)
+  albums: Album[];
 
-export const ArtistSchema = SchemaFactory.createForClass(Artist);
+  @Field(() => Date)
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @Field(() => Date)
+  @UpdateDateColumn()
+  updatedAt: Date;
+}

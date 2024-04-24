@@ -3,7 +3,7 @@
 # ------------------------------------------------------
 
 type Users {
-  _id: String!
+  id: Float!
   email: String!
   wallet: String!
   lowercaseEmail: String!
@@ -21,31 +21,57 @@ type LoginResult {
 }
 
 type Artist {
-  _id: String!
+  id: Float!
   name: String!
   description: String!
   user: Users!
-  timestamp: DateTime!
+  albums: [Album!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type Album {
-  _id: String!
+  id: Float!
   name: String!
   cover: String!
   artist: Artist!
-  timestamp: DateTime!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
-type CreateMusicResult {
+type Music {
+  id: Float!
   name: String!
   content: String!
   hash: String!
   album: Album!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Meta {
+  limit: Float!
+  page: Float!
+  totalPages: String!
+  totalItems: Float!
+}
+
+type ListMusicResult {
+  meta: Meta!
+  data: [Music!]!
 }
 
 type Query {
+  getMusics(pagination: Pagination): ListMusicResult!
+  getMusic(id: String!): Music!
   login(user: LoginUserInput!): LoginResult!
   refreshToken: String!
+}
+
+input Pagination {
+  page: Float = 1
+  limit: Float = 10
+  search: String = ""
 }
 
 input LoginUserInput {
@@ -54,7 +80,7 @@ input LoginUserInput {
 }
 
 type Mutation {
-  create(createMusicInput: CreateMusicInput!): CreateMusicResult!
+  create(createMusicInput: CreateMusicInput!): Music!
   createUser(createUserInput: CreateUserInput!): LoginResult!
 }
 

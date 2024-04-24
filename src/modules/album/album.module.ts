@@ -1,13 +1,11 @@
+import { Album } from '@/schemas/album.schema';
 import { Module } from '@nestjs/common';
-import { AlbumService } from './album.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AlbumResolver } from './album.resolver';
-import { MongooseModule } from '@nestjs/mongoose';
-import { Album, AlbumSchema } from '@/schemas/album.schema';
+import { AlbumService } from './album.service';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([{ name: Album.name, schema: AlbumSchema }]),
-  ],
+  imports: [TypeOrmModule.forFeature([Album])],
   providers: [AlbumResolver, AlbumService],
 })
 export class AlbumModule {}

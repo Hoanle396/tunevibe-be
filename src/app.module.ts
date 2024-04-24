@@ -12,14 +12,26 @@ import { ArtistModule } from './modules/artist/artist.module';
 import { RatingModule } from './modules/rating/rating.module';
 import { PlaylistModule } from './modules/playlist/playlist.module';
 import { InteractionModule } from './modules/interaction/interaction.module';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { Users } from './schemas/user.schema';
+import { Music } from './schemas/music.schema';
+import { Album } from './schemas/album.schema';
+import { Artist } from './schemas/artist.schema';
 @Module({
   imports: [
-    MongooseModule.forRootAsync({
+    TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (
         configService: ConfigService
-      ): Promise<MongooseModuleOptions> => ({
-        uri: configService.mongoUri,
+      ): Promise<TypeOrmModuleOptions> => ({
+        type: 'mysql',
+        host: configService.mysqlHost,
+        port: configService.mysqlPort,
+        username: configService.mysqlUser,
+        password: configService.mysqlPassword,
+        database: configService.mysqlDatabase,
+        entities: [Users, Music, Album, Artist],
+        synchronize: true,
       }),
       inject: [ConfigService],
     }),

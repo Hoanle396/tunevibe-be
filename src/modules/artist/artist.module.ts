@@ -1,13 +1,11 @@
+import { Artist } from '@/schemas/artist.schema';
 import { Module } from '@nestjs/common';
-import { ArtistService } from './artist.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { ArtistResolver } from './artist.resolver';
-import { MongooseModule } from '@nestjs/mongoose';
-import { Artist, ArtistSchema } from '@/schemas/artist.schema';
+import { ArtistService } from './artist.service';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([{ name: Artist.name, schema: ArtistSchema }]),
-  ],
+  imports: [TypeOrmModule.forFeature([Artist])],
   providers: [ArtistResolver, ArtistService],
 })
 export class ArtistModule {}

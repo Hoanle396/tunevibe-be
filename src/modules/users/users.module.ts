@@ -1,8 +1,8 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { MongooseModule } from '@nestjs/mongoose';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '../../auth/auth.module';
-import { Users, UsersSchema } from '../../schemas/user.schema';
+import { Users } from '../../schemas/user.schema';
 import { UsersResolver } from './users.resolver';
 import { UsersService } from './users.service';
 
@@ -10,7 +10,7 @@ import { UsersService } from './users.service';
   imports: [
     ConfigModule,
     forwardRef(() => AuthModule),
-    MongooseModule.forFeature([{ name: Users.name, schema: UsersSchema }]),
+    TypeOrmModule.forFeature([Users]),
   ],
   providers: [UsersResolver, UsersService],
   exports: [UsersService],

@@ -1,53 +1,48 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
-import { PasswordResetSchema } from './password-reset.schema';
+import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import * as bcrypt from 'bcryptjs';
+import {
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
-export type UserDocument = Users &
-  Document & {
-    password: string;
-    lowercaseEmail: string;
-    passwordReset?: {
-      token: string;
-      expiration: Date;
-    };
-    checkPassword(password: string): Promise<boolean>;
-  };
-
-@Schema()
+@Entity()
 @ObjectType()
 export class Users {
   @Field()
-  _id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Field(() => String)
-  @Prop({
-    required: true,
+  @Column({
+    nullable: false,
     unique: true,
-    validate: { validator: validateEmail },
   })
   email: string;
 
-  @Prop({ required: true })
+  @Column({
+    nullable: false,
+  })
   password: string;
 
   @Field(() => String)
-  @Prop({
-    required: true,
+  @Column({
+    nullable: false,
     unique: true,
   })
   wallet: string;
 
   @Field(() => String)
-  @Prop({
-    type: String,
+  @Column({
+    nullable: false,
     unique: true,
   })
   lowercaseEmail: string;
-
-  @Prop({ type: PasswordResetSchema })
-  passwordReset: typeof PasswordResetSchema;
 
   @Prop({
     type: Boolean,
@@ -58,59 +53,35 @@ export class Users {
   @Field(() => Date)
   @Prop()
   timestamp: Date;
-}
 
-export const UsersSchema = SchemaFactory.createForClass(Users);
+  @BeforeInsert()
+  @BeforeUpdate()
+  async hashPassword(): Promise<void> {
+    const salt = await bcrypt.genSalt();
+    this.password = await bcrypt.hash(this.password, salt);
+    this.lowercaseEmail = this.email.toLowerCase();
+  }
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  checkPassword = function (password: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      bcrypt.compare(password, this.password, (error, isMatch) => {
+        if (error) {
+          reject(error);
+        }
+        resolve(isMatch);
+      });
+    });
+  };
+}
 
 function validateEmail(email: string) {
   const expression =
     /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
   return expression.test(email);
 }
-
-UsersSchema.statics.validateEmail = function (email: string): boolean {
-  return validateEmail(email);
-};
-
-UsersSchema.pre<UserDocument>('save', function (next) {
-  // eslint-disable-next-line @typescript-eslint/no-this-alias
-  const user = this;
-
-  user.lowercaseEmail = user.email.toLowerCase();
-
-  // Make sure not to rehash the password if it is already hashed
-  if (!user.isModified('password')) {
-    return next();
-  }
-
-  // Generate a salt and use it to hash the user's password
-  bcrypt.genSalt(10, (genSaltError, salt) => {
-    if (genSaltError) {
-      return next(genSaltError);
-    }
-
-    bcrypt.hash(user.password, salt, (err, hash) => {
-      if (err) {
-        return next(err);
-      }
-      user.password = hash;
-      next();
-    });
-  });
-});
-
-UsersSchema.methods.checkPassword = function (
-  password: string
-): Promise<boolean> {
-  const user = this as UserDocument;
-
-  return new Promise((resolve, reject) => {
-    bcrypt.compare(password, user.password, (error, isMatch) => {
-      if (error) {
-        reject(error);
-      }
-
-      resolve(isMatch);
-    });
-  });
-};

@@ -1,37 +1,40 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import * as mongoose from 'mongoose';
-import { Document } from 'mongoose';
+import { Prop } from '@nestjs/mongoose';
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Artist } from './artist.schema';
 
-export type AlbumDocument = Album & Document;
-
-@Schema()
+@Entity()
 @ObjectType()
-export class Album {
+export class Album extends BaseEntity {
   @Field()
-  _id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Field(() => String)
-  @Prop({
-    required: true,
-  })
+  @Column({ nullable: false })
   name: string;
 
   @Field(() => String)
-  @Prop({
-    required: true,
-    unique: true,
-  })
+  @Column({ nullable: false })
   cover: string;
 
   @Field(() => Artist)
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Artist' })
+  @ManyToOne(() => Artist)
   artist: Artist;
 
   @Field(() => Date)
-  @Prop()
-  timestamp: Date;
-}
+  @CreateDateColumn()
+  createdAt: Date;
 
-export const AlbumSchema = SchemaFactory.createForClass(Album);
+  @Field(() => Date)
+  @UpdateDateColumn()
+  updatedAt: Date;
+}

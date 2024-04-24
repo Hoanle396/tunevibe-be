@@ -5,7 +5,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Args, Context, Query, Resolver } from '@nestjs/graphql';
-import { UserDocument, Users } from '../schemas/user.schema';
+import { Users } from '../schemas/user.schema';
 import {
   LoginResult,
   LoginUserInput,
@@ -35,7 +35,7 @@ export class AuthResolver {
   @UseGuards(JwtAuthGuard)
   @Query(() => String)
   async refreshToken(@Context('req') request: any): Promise<string> {
-    const user: UserDocument = request.user;
+    const user: Users = request.user;
     if (!user)
       throw new UnauthorizedException(
         'Could not log-in with the provided credentials'

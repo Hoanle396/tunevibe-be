@@ -25,16 +25,12 @@ export class ConfigService {
 
   private validateInput(envConfig: EnvConfig): EnvConfig {
     const envVarsSchema: Joi.ObjectSchema = Joi.object({
-      MONGO_URI: Joi.string().required(),
-      MONGO_AUTH_ENABLED: Joi.boolean().default(false),
-      MONGO_USER: Joi.string().when('MONGO_AUTH_ENABLED', {
-        is: true,
-        then: Joi.required(),
-      }),
-      MONGO_PASSWORD: Joi.string().when('MONGO_AUTH_ENABLED', {
-        is: true,
-        then: Joi.required(),
-      }),
+      MYSQL_HOST: Joi.string().required(),
+      MYSQL_DB: Joi.string().required(),
+      MYSQL_PORT: Joi.number().required(),
+      MYSQL_AUTH_ENABLED: Joi.boolean().default(false),
+      MYSQL_USER: Joi.string(),
+      MYSQL_PASSWORD: Joi.string().allow(null),
       JWT_SECRET: Joi.string().required(),
       JWT_EXPIRES_IN: Joi.number(),
     });
@@ -43,7 +39,7 @@ export class ConfigService {
       envVarsSchema.validate(envConfig);
     if (error) {
       throw new Error(
-        `Config validation error in your env file: ${error.message}`,
+        `Config validation error in your env file: ${error.message}`
       );
     }
     return validatedEnvConfig;
@@ -56,19 +52,27 @@ export class ConfigService {
     return undefined;
   }
 
-  get mongoUri(): string {
-    return this.envConfig.MONGO_URI;
+  get mysqlHost(): string {
+    return this.envConfig.MYSQL_HOST;
   }
 
   get jwtSecret(): string {
     return this.envConfig.JWT_SECRET;
   }
 
-  get mongoUser(): string | undefined {
-    return this.envConfig.MONGO_USER;
+  get mysqlUser(): string | undefined {
+    return this.envConfig.MYSQL_USER;
   }
 
-  get mongoPassword(): string | undefined {
-    return this.envConfig.MONGO_PASSWORD;
+  get mysqlPassword(): string | undefined {
+    return this.envConfig.MYSQL_PASSWORD;
+  }
+
+  get mysqlDatabase(): string | undefined {
+    return this.envConfig.MYSQL_DB;
+  }
+
+  get mysqlPort(): number | undefined {
+    return Number(this.envConfig.MYSQL_PORT);
   }
 }

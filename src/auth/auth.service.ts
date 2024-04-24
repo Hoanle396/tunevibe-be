@@ -1,12 +1,12 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '../config/config.service';
 import {
   LoginResult,
   LoginUserInput,
 } from '../modules/users/dto/users-inputs.dto';
 import { UsersService } from '../modules/users/users.service';
-import { ConfigService } from '../config/config.service';
-import { UserDocument, Users } from '../schemas/user.schema';
+import { Users } from '../schemas/user.schema';
 import { JwtPayload } from './interfaces/jwt-payload.interfaces';
 
 @Injectable()
@@ -22,7 +22,7 @@ export class AuthService {
     loginAttempt: LoginUserInput
   ): Promise<LoginResult | undefined> {
     // This will be used for the initial login
-    let userToAttempt: UserDocument | undefined;
+    let userToAttempt: Users | undefined;
     if (loginAttempt.email) {
       userToAttempt = await this._usersService.findOneByEmail(
         loginAttempt.email
@@ -50,31 +50,18 @@ export class AuthService {
         user: userToAttempt!,
         token,
       };
-      userToAttempt.timestamp = new Date();
-      userToAttempt.save();
       return result;
     }
 
     return undefined;
   }
 
-  /**
-   * Verifies that the JWT payload associated with a JWT is valid by making sure the user exists and is enabled
-   *
-   * @param {JwtPayload} payload
-   * @returns {(Promise<UserDocument | undefined>)} returns undefined if there is no user or the account is not enabled
-   * @memberof {(AuthService JwtStrategy)}
-   */
-  async validateJwtPayload(
-    payload: JwtPayload
-  ): Promise<UserDocument | undefined> {
+  async validateJwtPayload(payload: JwtPayload): Promise<Users | undefined> {
     // This will be used when the user has already logged in and has a JWT
     const user = await this._usersService.findOneByEmail(payload.email);
 
     // Ensure the user exists and their account isn't disabled
-    if (user && user.enabled) {
-      user.timestamp = new Date();
-      user.save();
+    if (user) {
       return user;
     }
 
@@ -90,7 +77,7 @@ export class AuthService {
     }
     const data: JwtPayload = {
       email: user.email,
-      _id: user._id,
+      id: user.id,
       expiration,
     };
 

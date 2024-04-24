@@ -1,0 +1,22 @@
+import { Field, InputType, ObjectType } from '@nestjs/graphql';
+
+@InputType()
+export class Pagination {
+  @Field(() => Number, { defaultValue: 1, nullable: true })
+  page?: number;
+  @Field(() => Number, { defaultValue: 10, nullable: true })
+  limit?: number;
+  @Field(() => String, { defaultValue: '', nullable: true })
+  search?: string;
+}
+@ObjectType()
+export class Meta {
+  @Field(() => Number)
+  limit?: number;
+  @Field(() => Number)
+  page?: number;
+  @Field(() => String)
+  totalPages?: string;
+  @Field(() => Number)
+  totalItems?: number;
+}
