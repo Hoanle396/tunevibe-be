@@ -4,6 +4,7 @@ import { ConfigService } from '../config/config.service';
 import {
   LoginResult,
   LoginUserInput,
+  LoginWithWallet,
 } from '../modules/users/dto/users-inputs.dto';
 import { UsersService } from '../modules/users/users.service';
 import { Users } from '../schemas/user.schema';
@@ -55,7 +56,29 @@ export class AuthService {
 
     return undefined;
   }
+  async validateUserByWallet({
+    wallet,
+  }: LoginWithWallet): Promise<LoginResult | undefined> {
+    // This will be used for the initial login
+    let userToAttempt: Users | undefined;
+    if (wallet) {
+      userToAttempt = await this._usersService.findOneByWallet(wallet);
+    }
 
+    // If the user is not enabled, disable log in - the token wouldn't work anyways
+    if (userToAttempt && userToAttempt.enabled === false)
+      userToAttempt = undefined;
+
+    if (!userToAttempt) return undefined;
+
+    // If there is a successful match, generate a JWT for the user
+    const token = this.createJwt(userToAttempt!).token;
+    const result: LoginResult = {
+      user: userToAttempt!,
+      token,
+    };
+    return result;
+  }
   async validateJwtPayload(payload: JwtPayload): Promise<Users | undefined> {
     // This will be used when the user has already logged in and has a JWT
     const user = await this._usersService.findOneByEmail(payload.email);

@@ -25,7 +25,7 @@ export class UsersService {
       const user = new Users();
       user.email = createUserInput.email;
       user.password = createUserInput.password;
-      user.wallet = createUserInput.wallet;
+      user.wallet = createUserInput.wallet.toLowerCase();
 
       await this.userModel.save(user);
       const token = await this.authService.createJwt(user);
@@ -39,6 +39,15 @@ export class UsersService {
   async findOneByEmail(email: string): Promise<Users | undefined> {
     const user = await this.userModel.findOne({
       where: { email: email.toLowerCase() },
+    });
+
+    if (user) return user;
+    return undefined;
+  }
+
+  async findOneByWallet(wallet: string): Promise<Users | undefined> {
+    const user = await this.userModel.findOne({
+      where: { wallet: wallet.toLowerCase() },
     });
 
     if (user) return user;

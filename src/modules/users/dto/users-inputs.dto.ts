@@ -20,6 +20,12 @@ export class LoginUserInput {
 }
 
 @InputType()
+export class LoginWithWallet {
+  @Field(() => String)
+  wallet: string;
+}
+
+@InputType()
 export class UpdatePasswordInput {
   @Field(() => String)
   oldPassword: string;
