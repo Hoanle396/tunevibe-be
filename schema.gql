@@ -69,6 +69,9 @@ type Music {
   name: String!
   content: String!
   hash: String!
+  limit: Float!
+  price: Float!
+  cover: String!
   album: Album!
   vote: [Vote!]!
   comment: [Comment!]!
@@ -104,6 +107,7 @@ type Query {
   getMusics(pagination: Pagination): ListMusicResult!
   getMusic(id: String!): Music!
   login(user: LoginUserInput!): LoginResult!
+  loginWallet(user: LoginWithWallet!): LoginResult!
   refreshToken: String!
 }
 
@@ -118,6 +122,10 @@ input LoginUserInput {
   password: String!
 }
 
+input LoginWithWallet {
+  wallet: String!
+}
+
 type Mutation {
   create(createMusicInput: CreateMusicInput!): Music!
   createUser(createUserInput: CreateUserInput!): LoginResult!
@@ -126,6 +134,9 @@ type Mutation {
 input CreateMusicInput {
   name: String!
   content: String!
+  limit: Float!
+  cover: String!
+  price: Float!
   hash: String!
   albumId: String!
 }

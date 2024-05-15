@@ -5,13 +5,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Music } from 'src/schemas/music.schema';
 import { ILike, Repository } from 'typeorm';
 import { CreateMusicInput, ListMusicResult } from './dto/create-music.input';
+import { Play } from '@/schemas/play.schema';
 
 @Injectable()
 export class MusicsService {
   constructor(@InjectRepository(Music) private musicModel: Repository<Music>) {}
   async create(createMusicInput: CreateMusicInput): Promise<Music> {
     try {
-      return await this.musicModel.save(createMusicInput);
+      const play = new Play();
+      play.save();
+      return await this.musicModel.save({...createMusicInput,play});
     } catch (error) {
       throw new BadRequestException(error);
     }
@@ -28,6 +31,10 @@ export class MusicsService {
           album: {
             artist: true,
           },
+          comment: true,
+          interaction: true,
+          vote: true,
+          play: true,
         },
       });
       return {

@@ -5,9 +5,10 @@ import { Artist } from 'src/schemas/artist.schema';
 import { Music } from 'src/schemas/music.schema';
 import { MusicsResolver } from './musics.resolver';
 import { MusicsService } from './musics.service';
+import { Play } from '@/schemas/play.schema';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Music, Album, Artist])],
+  imports: [TypeOrmModule.forFeature([Music, Album, Artist,Play])],
   providers: [MusicsResolver, MusicsService],
   exports: [MusicsService],
 })

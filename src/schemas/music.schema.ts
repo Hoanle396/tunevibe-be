@@ -43,6 +43,26 @@ export class Music extends BaseEntity {
   })
   hash: string;
 
+  @Field(() => Number)
+  @Column({
+    nullable: false,
+    zerofill: true,
+  })
+  limit: number;
+
+  @Field(() => Number)
+  @Column({
+    nullable: false,
+    zerofill: true,
+  })
+  price: number;
+
+  @Field(() => String)
+  @Column({
+    nullable: true,
+  })
+  cover: string;
+
   @Field(() => Album)
   @ManyToOne(() => Album, (album) => album.musics)
   album: Album;
