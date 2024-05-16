@@ -103,12 +103,32 @@ type ListMusicResult {
   data: [Music!]!
 }
 
+type ListArtistResult {
+  meta: Meta!
+  data: [Artist!]!
+}
+
+type ListVoteResult {
+  meta: Meta!
+  data: [Vote!]!
+}
+
 type Query {
+  getVotes(pagination: VoteArgs!): ListVoteResult!
+  getArtists(pagination: Pagination): ListArtistResult!
+  getArtist(id: String!): Artist!
   getMusics(pagination: Pagination): ListMusicResult!
   getMusic(id: String!): Music!
   login(user: LoginUserInput!): LoginResult!
   loginWallet(user: LoginWithWallet!): LoginResult!
   refreshToken: String!
+}
+
+input VoteArgs {
+  page: Float = 1
+  limit: Float = 10
+  search: String = ""
+  musicId: Float!
 }
 
 input Pagination {
@@ -127,8 +147,22 @@ input LoginWithWallet {
 }
 
 type Mutation {
+  createVote(input: CreateVoteInput!): Vote!
+  createArtist(input: CreateArtistInput!): Artist!
   create(createMusicInput: CreateMusicInput!): Music!
   createUser(createUserInput: CreateUserInput!): LoginResult!
+}
+
+input CreateVoteInput {
+  musicId: Float!
+  rate: Float!
+  userId: Float!
+}
+
+input CreateArtistInput {
+  name: String!
+  description: String!
+  userId: String!
 }
 
 input CreateMusicInput {
