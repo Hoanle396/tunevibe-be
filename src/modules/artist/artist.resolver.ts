@@ -8,13 +8,10 @@ import { NotFoundException } from '@nestjs/common';
 
 @Resolver('Artist')
 export class ArtistResolver {
-  constructor(private readonly artistService: ArtistService) {
+  constructor(private readonly artistService: ArtistService) {}
 
-  }
   @Mutation(() => Artist)
-  async createArtist(
-    @Args('input') input: CreateArtistInput
-  ): Promise<Artist> {
+  async createArtist(@Args('input') input: CreateArtistInput): Promise<Artist> {
     let created: Artist | undefined;
     try {
       created = await this.artistService.create(input);

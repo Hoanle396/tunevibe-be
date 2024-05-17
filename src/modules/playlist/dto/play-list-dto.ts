@@ -8,6 +8,21 @@ export class CreatePlaylistInput {
   name: string;
 }
 
+@InputType()
+export class UpdatePlaylistInput extends CreatePlaylistInput {
+  @Field(() => Number)
+  id: number;
+}
+
+@InputType()
+export class AddToPlaylistInput {
+  @Field(() => Number)
+  playlistId: number;
+
+  @Field(() => Number)
+  musicId: number;
+}
+
 @ObjectType()
 export class ListPlayListResult {
   @Field(() => Meta)

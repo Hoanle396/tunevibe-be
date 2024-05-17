@@ -23,6 +23,7 @@ import { Vote } from './schemas/vote.schema';
 import { PlayList } from './schemas/playlist.schema';
 import { Interaction } from './schemas/interaction.schema';
 import { Play } from './schemas/play.schema';
+import { PlayListMusic } from './schemas/playlist-music.schema';
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
@@ -47,6 +48,7 @@ import { Play } from './schemas/play.schema';
           PlayList,
           Interaction,
           Play,
+          // PlayListMusic,
         ],
         synchronize: true,
         logging: true,

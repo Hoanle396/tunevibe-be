@@ -8,7 +8,7 @@ import { MusicsService } from './musics.service';
 import { Play } from '@/schemas/play.schema';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Music, Album, Artist,Play])],
+  imports: [TypeOrmModule.forFeature([Music, Album, Artist, Play])],
   providers: [MusicsResolver, MusicsService],
   exports: [MusicsService],
 })

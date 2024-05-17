@@ -9,16 +9,17 @@ import { Users } from '@/schemas/user.schema';
 
 @Injectable()
 export class ArtistService {
-  constructor(@InjectRepository(Artist) private Artist: Repository<Artist>,
+  constructor(
+    @InjectRepository(Artist) private Artist: Repository<Artist>,
     @InjectRepository(Users) private Users: Repository<Users>
-  ) { }
+  ) {}
   async create(input: CreateArtistInput): Promise<Artist> {
     try {
-      const user = await this.Users.findOne({ where: { id: +input.userId } })
+      const user = await this.Users.findOne({ where: { id: +input.userId } });
       if (!user) {
-        throw new BadRequestException("User does not exist");
+        throw new BadRequestException('User does not exist');
       }
-      return await this.Artist.save({ ...input,user });
+      return await this.Artist.save({ ...input, user });
     } catch (error) {
       throw new BadRequestException(error);
     }

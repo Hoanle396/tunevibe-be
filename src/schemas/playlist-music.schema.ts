@@ -1,37 +1,29 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import {
   BaseEntity,
-  Column,
   CreateDateColumn,
   Entity,
-  JoinTable,
-  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Music } from './music.schema';
-import { Users } from './user.schema';
+import { PlayList } from './playlist.schema';
 
 @Entity()
 @ObjectType()
-export class PlayList extends BaseEntity {
+export class PlayListMusic extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Field(() => String)
-  @Column({ nullable: false })
-  name: string;
+  @Field(() => Music)
+  @ManyToOne(() => Music, { onDelete: 'NO ACTION', onUpdate: 'NO ACTION' })
+  music: Music;
 
-  @Field(() => Users)
-  @ManyToOne(() => Users, (u) => u.id)
-  user: Users;
-
-  @Field(() => [Music])
-  @ManyToMany(() => Music, { onDelete: 'NO ACTION', onUpdate: 'NO ACTION' })
-  @JoinTable()
-  musics: Music[];
+  @Field(() => PlayList)
+  @ManyToOne(() => PlayList, { onDelete: 'NO ACTION', onUpdate: 'NO ACTION' })
+  playlist: PlayList;
 
   @Field(() => Date)
   @CreateDateColumn()

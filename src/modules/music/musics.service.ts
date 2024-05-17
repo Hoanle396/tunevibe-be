@@ -6,15 +6,29 @@ import { Music } from 'src/schemas/music.schema';
 import { ILike, Repository } from 'typeorm';
 import { CreateMusicInput, ListMusicResult } from './dto/create-music.input';
 import { Play } from '@/schemas/play.schema';
+import { Album } from '@/schemas/album.schema';
 
 @Injectable()
 export class MusicsService {
-  constructor(@InjectRepository(Music) private musicModel: Repository<Music>) {}
+  constructor(
+    @InjectRepository(Music) private musicModel: Repository<Music>,
+    @InjectRepository(Album) private Album: Repository<Album>
+  ) {}
   async create(createMusicInput: CreateMusicInput): Promise<Music> {
     try {
+      const exits = await this.Album.findOne({
+        where: { id: +createMusicInput.albumId },
+      });
+      if (!exits) {
+        throw new BadRequestException('Album not found');
+      }
       const play = new Play();
       play.save();
-      return await this.musicModel.save({...createMusicInput,play});
+      return await this.musicModel.save({
+        ...createMusicInput,
+        play,
+        albumId: exits.id,
+      });
     } catch (error) {
       throw new BadRequestException(error);
     }

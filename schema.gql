@@ -103,6 +103,11 @@ type ListMusicResult {
   data: [Music!]!
 }
 
+type ListAlbumResult {
+  meta: Meta!
+  data: [Album!]!
+}
+
 type ListArtistResult {
   meta: Meta!
   data: [Artist!]!
@@ -113,7 +118,23 @@ type ListVoteResult {
   data: [Vote!]!
 }
 
+type PlayList {
+  id: Float!
+  name: String!
+  user: Users!
+  musics: [Music!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type ListPlayListResult {
+  meta: Meta!
+  data: [PlayList!]!
+}
+
 type Query {
+  getPlaylists(pagination: Pagination): ListPlayListResult!
+  getPlaylist(id: String!): PlayList!
   getVotes(pagination: VoteArgs!): ListVoteResult!
   getArtists(pagination: Pagination): ListArtistResult!
   getArtist(id: String!): Artist!
@@ -124,17 +145,17 @@ type Query {
   refreshToken: String!
 }
 
+input Pagination {
+  page: Float = 1
+  limit: Float = 10
+  search: String = ""
+}
+
 input VoteArgs {
   page: Float = 1
   limit: Float = 10
   search: String = ""
   musicId: Float!
-}
-
-input Pagination {
-  page: Float = 1
-  limit: Float = 10
-  search: String = ""
 }
 
 input LoginUserInput {
@@ -147,10 +168,36 @@ input LoginWithWallet {
 }
 
 type Mutation {
+  create(createMusicInput: CreateMusicInput!): Music!
+  update(input: UpdateAlbumInput!): Album!
+  delete(id: String!): Album!
+  addToPlaylist(input: AddToPlaylistInput!): PlayList!
+  deleteFromPlaylist(input: AddToPlaylistInput!): PlayList!
   createVote(input: CreateVoteInput!): Vote!
   createArtist(input: CreateArtistInput!): Artist!
-  create(createMusicInput: CreateMusicInput!): Music!
   createUser(createUserInput: CreateUserInput!): LoginResult!
+}
+
+input CreateMusicInput {
+  name: String!
+  content: String!
+  limit: Float!
+  cover: String!
+  price: Float!
+  hash: String!
+  albumId: String!
+}
+
+input UpdateAlbumInput {
+  name: String!
+  cover: String!
+  artist: Float!
+  id: Float!
+}
+
+input AddToPlaylistInput {
+  playlistId: Float!
+  musicId: Float!
 }
 
 input CreateVoteInput {
@@ -163,16 +210,6 @@ input CreateArtistInput {
   name: String!
   description: String!
   userId: String!
-}
-
-input CreateMusicInput {
-  name: String!
-  content: String!
-  limit: Float!
-  cover: String!
-  price: Float!
-  hash: String!
-  albumId: String!
 }
 
 input CreateUserInput {
