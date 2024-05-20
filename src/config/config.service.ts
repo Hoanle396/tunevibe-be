@@ -33,6 +33,8 @@ export class ConfigService {
       MYSQL_PASSWORD: Joi.string().allow(null),
       JWT_SECRET: Joi.string().required(),
       JWT_EXPIRES_IN: Joi.number(),
+      PRIVATE_KEY: Joi.string().required(),
+      RPC_URL: Joi.string().required(),
     });
 
     const { error, value: validatedEnvConfig } =
@@ -70,6 +72,13 @@ export class ConfigService {
 
   get mysqlDatabase(): string | undefined {
     return this.envConfig.MYSQL_DB;
+  }
+
+  get privateKey(): string | undefined {
+    return this.envConfig.PRIVATE_KEY;
+  }
+  get RPC(): string | undefined {
+    return this.envConfig.RPC_URL;
   }
 
   get mysqlPort(): number | undefined {
