@@ -1,7 +1,7 @@
 import { Album } from '@/schemas/album.schema';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ILike, Repository } from 'typeorm';
+import { FindOptionsWhere, ILike, Repository } from 'typeorm';
 import {
   CreateAlbumInput,
   ListAlbumResult,
@@ -10,6 +10,7 @@ import {
 import { Artist } from '@/schemas/artist.schema';
 import { Pagination } from '@/decorators/types';
 import { genMeta } from '@/utils/function';
+import { Users } from '@/schemas/user.schema';
 
 @Injectable()
 export class AlbumService {
@@ -68,11 +69,18 @@ export class AlbumService {
     }
   }
 
-  async find(params: Pagination): Promise<ListAlbumResult> {
+  async find(params: Pagination, user?: Users): Promise<ListAlbumResult> {
     const { limit = 10, search = '', page = 1 } = params;
+    let where: FindOptionsWhere<Album> = {};
     try {
+      let artist;
+      if (user) {
+        artist = await this.Artist.findOne({ where: { id: user.id } });
+        if (artist) where.artist = artist;
+      }
+      where.name = ILike('%' + search + '%');
       const [albums, counts] = await this.Album.findAndCount({
-        where: { name: ILike('%' + search + '%') },
+        where,
         take: limit,
         skip: (page - 1) * limit,
         relations: {

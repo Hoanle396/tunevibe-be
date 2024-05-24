@@ -138,6 +138,8 @@ type Query {
   getVotes(pagination: VoteArgs!): ListVoteResult!
   getArtists(pagination: Pagination): ListArtistResult!
   getArtist(id: String!): Artist!
+  getAlbums(pagination: Pagination): ListAlbumResult!
+  getAlbum(id: String!): Album!
   getMusics(pagination: Pagination): ListMusicResult!
   getMusic(id: String!): Music!
   login(user: LoginUserInput!): LoginResult!
@@ -169,12 +171,15 @@ input LoginWithWallet {
 
 type Mutation {
   create(createMusicInput: CreateMusicInput!): Music!
-  update(input: UpdateAlbumInput!): Album!
-  delete(id: String!): Album!
+  update(input: UpdatePlaylistInput!): PlayList!
+  delete(id: String!): Boolean!
   addToPlaylist(input: AddToPlaylistInput!): PlayList!
   deleteFromPlaylist(input: AddToPlaylistInput!): PlayList!
   createVote(input: CreateVoteInput!): Vote!
   createArtist(input: CreateArtistInput!): Artist!
+  createAlbum(input: CreateAlbumInput!): Album!
+  updateAlbum(input: UpdateAlbumInput!): Album!
+  deleteAlbum(id: String!): Album!
   createUser(createUserInput: CreateUserInput!): LoginResult!
 }
 
@@ -188,10 +193,8 @@ input CreateMusicInput {
   albumId: String!
 }
 
-input UpdateAlbumInput {
+input UpdatePlaylistInput {
   name: String!
-  cover: String!
-  artist: Float!
   id: Float!
 }
 
@@ -210,6 +213,19 @@ input CreateArtistInput {
   name: String!
   description: String!
   userId: String!
+}
+
+input CreateAlbumInput {
+  name: String!
+  cover: String!
+  artist: Float!
+}
+
+input UpdateAlbumInput {
+  name: String!
+  cover: String!
+  artist: Float!
+  id: Float!
 }
 
 input CreateUserInput {

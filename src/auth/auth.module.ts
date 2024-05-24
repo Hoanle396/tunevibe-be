@@ -6,11 +6,11 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { ConfigModule } from '../config/config.module';
-
+const passportModule = PassportModule.register({ defaultStrategy: 'jwt' });
 @Module({
   imports: [
     forwardRef(() => UsersModule),
-    PassportModule.register({ defaultStrategy: 'jwt' }),
+    passportModule,
     JwtModule.register({
       secret: 'SECRET',
       signOptions: {
@@ -20,6 +20,6 @@ import { ConfigModule } from '../config/config.module';
     ConfigModule,
   ],
   providers: [AuthService, AuthResolver, JwtStrategy],
-  exports: [AuthService],
+  exports: [AuthService, passportModule],
 })
 export class AuthModule {}

@@ -1,4 +1,4 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AlbumService } from './album.service';
 import { Album } from '@/schemas/album.schema';
 import {
@@ -8,13 +8,15 @@ import {
 } from './dto/album-dto';
 import { UserInputError } from 'apollo-server-express';
 import { Pagination } from '@/decorators/types';
-import { NotFoundException } from '@nestjs/common';
+import { NotFoundException, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
+import { Users } from '@/schemas/user.schema';
 
 @Resolver('Album')
 export class AlbumResolver {
   constructor(private readonly albumService: AlbumService) {}
   @Mutation(() => Album)
-  async create(@Args('input') input: CreateAlbumInput): Promise<Album> {
+  async createAlbum(@Args('input') input: CreateAlbumInput): Promise<Album> {
     try {
       return await this.albumService.create(input);
     } catch (error) {
@@ -23,7 +25,7 @@ export class AlbumResolver {
   }
 
   @Mutation(() => Album)
-  async update(@Args('input') input: UpdateAlbumInput): Promise<Album> {
+  async updateAlbum(@Args('input') input: UpdateAlbumInput): Promise<Album> {
     try {
       return await this.albumService.update(input);
     } catch (error) {
@@ -31,19 +33,21 @@ export class AlbumResolver {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Query(() => ListAlbumResult)
-  async getMusics(
+  async getAlbums(
+    @Context('req') { user }: { user?: Users },
     @Args('pagination', { nullable: true }) pagination?: Pagination
   ) {
     try {
-      return await this.albumService.find(pagination);
+      return await this.albumService.find(pagination, user);
     } catch (error) {
       throw new UserInputError(error.message);
     }
   }
 
   @Query(() => Album)
-  async getMusic(@Args('id') id: string) {
+  async getAlbum(@Args('id') id: string) {
     try {
       const music = await this.albumService.findOne(+id);
 
@@ -55,7 +59,7 @@ export class AlbumResolver {
   }
 
   @Mutation(() => Album)
-  async delete(@Args('id') id: string): Promise<any> {
+  async deleteAlbum(@Args('id') id: string): Promise<any> {
     try {
       return await this.albumService.delete(+id);
     } catch (error) {

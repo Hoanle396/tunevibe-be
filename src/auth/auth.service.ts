@@ -83,12 +83,7 @@ export class AuthService {
     // This will be used when the user has already logged in and has a JWT
     const user = await this._usersService.findOneByEmail(payload.email);
 
-    // Ensure the user exists and their account isn't disabled
-    if (user) {
-      return user;
-    }
-
-    return undefined;
+    return user || undefined;
   }
 
   createJwt(user: Users): { data: JwtPayload; token: string } {
