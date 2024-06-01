@@ -138,6 +138,7 @@ type Query {
   getVotes(pagination: VoteArgs!): ListVoteResult!
   getArtists(pagination: Pagination): ListArtistResult!
   getArtist(id: String!): Artist!
+  getMe: Artist!
   getAlbums(pagination: Pagination): ListAlbumResult!
   getAlbum(id: String!): Album!
   getMusics(pagination: Pagination): ListMusicResult!

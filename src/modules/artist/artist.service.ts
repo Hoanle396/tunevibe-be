@@ -25,6 +25,14 @@ export class ArtistService {
     }
   }
 
+  async getMe(user: Users) {
+    return await this.Artist.findOne({
+      where: {
+        user,
+      },
+    });
+  }
+
   async find(params: Pagination): Promise<ListArtistResult> {
     const { limit = 10, search = '', page = 1 } = params;
     try {
