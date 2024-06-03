@@ -13,24 +13,44 @@ export class ArtistService {
     @InjectRepository(Artist) private Artist: Repository<Artist>,
     @InjectRepository(Users) private Users: Repository<Users>
   ) {}
-  async create(input: CreateArtistInput): Promise<Artist> {
+  async createOrUpdate(input: CreateArtistInput): Promise<Artist> {
     try {
-      const user = await this.Users.findOne({ where: { id: +input.userId } });
-      if (!user) {
-        throw new BadRequestException('User does not exist');
+      if (input.id) {
+        const artist = await this.Artist.findOne({ where: { id: input.id } });
+        if (!artist) {
+          throw new BadRequestException('Artist does not exist');
+        }
+        if (input.description) artist.description = input.description;
+        if (input.name) artist.name = input.name;
+        return await artist.save();
+      } else {
+        const user = await this.Users.findOne({ where: { id: +input.userId } });
+        if (!user) {
+          throw new BadRequestException('User does not exist');
+        }
+        return await this.Artist.save({ ...input, user });
       }
-      return await this.Artist.save({ ...input, user });
     } catch (error) {
       throw new BadRequestException(error);
     }
   }
 
-  async getMe(user: Users) {
-    return await this.Artist.findOne({
-      where: {
-        user,
-      },
-    });
+  async getMe({ id }: Users) {
+    try {
+      const me = await this.Artist.findOne({
+        where: {
+          user: {
+            id,
+          },
+        },
+      });
+      if (me) {
+        return me;
+      }
+      return undefined;
+    } catch (error) {
+      return undefined;
+    }
   }
 
   async find(params: Pagination): Promise<ListArtistResult> {

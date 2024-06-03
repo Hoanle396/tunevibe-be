@@ -13,10 +13,10 @@ export class ArtistResolver {
   constructor(private readonly artistService: ArtistService) {}
 
   @Mutation(() => Artist)
-  async createArtist(@Args('input') input: CreateArtistInput): Promise<Artist> {
+  async createUpdateArtist(@Args('input') input: CreateArtistInput): Promise<Artist> {
     let created: Artist | undefined;
     try {
-      created = await this.artistService.create(input);
+      created = await this.artistService.createOrUpdate(input);
     } catch (error) {
       throw new UserInputError(error.message);
     }

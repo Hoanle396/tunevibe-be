@@ -12,6 +12,9 @@ export class CreateArtistInput {
 
   @Field(() => String)
   userId: string;
+
+  @Field(() => Number, { defaultValue: 0, nullable: true })
+  id?: number;
 }
 
 @ObjectType()

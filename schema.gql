@@ -177,7 +177,7 @@ type Mutation {
   addToPlaylist(input: AddToPlaylistInput!): PlayList!
   deleteFromPlaylist(input: AddToPlaylistInput!): PlayList!
   createVote(input: CreateVoteInput!): Vote!
-  createArtist(input: CreateArtistInput!): Artist!
+  createUpdateArtist(input: CreateArtistInput!): Artist!
   createAlbum(input: CreateAlbumInput!): Album!
   updateAlbum(input: UpdateAlbumInput!): Album!
   deleteAlbum(id: String!): Album!
@@ -214,6 +214,7 @@ input CreateArtistInput {
   name: String!
   description: String!
   userId: String!
+  id: Float = 0
 }
 
 input CreateAlbumInput {

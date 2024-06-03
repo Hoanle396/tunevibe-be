@@ -8,6 +8,8 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  JoinTable,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -34,10 +36,12 @@ export class Artist extends BaseEntity {
 
   @Field(() => Users)
   @OneToOne(() => Users, (user) => user.id)
+  @JoinColumn()
   user: Users;
 
   @Field(() => [Album])
   @OneToMany(() => Album, (post) => post.id)
+  @JoinTable()
   albums: Album[];
 
   @Field(() => Date)
