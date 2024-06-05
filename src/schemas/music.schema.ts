@@ -33,6 +33,7 @@ export class Music extends BaseEntity {
   @Field(() => String)
   @Column({
     nullable: true,
+    length: 2000,
   })
   content: string;
 

@@ -14,21 +14,27 @@ export class MusicsService {
     @InjectRepository(Music) private musicModel: Repository<Music>,
     @InjectRepository(Album) private Album: Repository<Album>
   ) {}
-  async create(createMusicInput: CreateMusicInput): Promise<Music> {
+  async create(input: CreateMusicInput): Promise<Music> {
     try {
+      const { albumId, content, cover, hash, limit, name, price } = input;
       const exits = await this.Album.findOne({
-        where: { id: +createMusicInput.albumId },
+        where: { id: +albumId },
       });
       if (!exits) {
         throw new BadRequestException('Album not found');
       }
       const play = new Play();
       play.save();
-      return await this.musicModel.save({
-        ...createMusicInput,
-        play,
-        albumId: exits.id,
-      });
+      const music = new Music();
+      music.album = exits;
+      music.cover = cover;
+      music.content = content;
+      music.hash = hash;
+      music.limit = limit;
+      music.name = name;
+      music.price = price;
+      music.play = play;
+      return await music.save();
     } catch (error) {
       throw new BadRequestException(error);
     }

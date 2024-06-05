@@ -94,7 +94,7 @@ type Album {
 type Meta {
   limit: Float!
   page: Float!
-  totalPages: String!
+  totalPages: Float!
   totalItems: Float!
 }
 

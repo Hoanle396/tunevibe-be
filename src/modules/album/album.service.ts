@@ -16,7 +16,7 @@ import { Users } from '@/schemas/user.schema';
 export class AlbumService {
   constructor(
     @InjectRepository(Album) private Album: Repository<Album>,
-    @InjectRepository(Artist) private Artist: Repository<Album>
+    @InjectRepository(Artist) private Artist: Repository<Artist>
   ) {}
   async create({ name, artist, cover }: CreateAlbumInput): Promise<Album> {
     try {
@@ -24,7 +24,7 @@ export class AlbumService {
       if (!artistExits) {
         throw new BadRequestException('Artist not found');
       }
-      return await this.Album.create({
+      return await this.Album.save({
         name,
         cover,
         artist: artistExits,
@@ -73,10 +73,22 @@ export class AlbumService {
     const { limit = 10, search = '', page = 1 } = params;
     let where: FindOptionsWhere<Album> = {};
     try {
-      let artist;
+      let artist: Artist | undefined;
       if (user) {
-        artist = await this.Artist.findOne({ where: { id: user.id } });
-        if (artist) where.artist = artist;
+        artist = await this.Artist.findOne({
+          where: {
+            user: {
+              id: user.id,
+            },
+          },
+        });
+
+        if (artist)
+          where = {
+            artist: {
+              id: artist.id,
+            },
+          };
       }
       where.name = ILike('%' + search + '%');
       const [albums, counts] = await this.Album.findAndCount({
@@ -85,6 +97,7 @@ export class AlbumService {
         skip: (page - 1) * limit,
         relations: {
           musics: true,
+          artist: true,
         },
       });
       return {

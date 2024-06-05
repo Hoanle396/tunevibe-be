@@ -15,8 +15,8 @@ export class Meta {
   limit?: number;
   @Field(() => Number)
   page?: number;
-  @Field(() => String)
-  totalPages?: string;
+  @Field(() => Number)
+  totalPages?: number;
   @Field(() => Number)
   totalItems?: number;
 }
