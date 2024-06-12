@@ -136,6 +136,7 @@ type Query {
   getPlaylists(pagination: Pagination): ListPlayListResult!
   getPlaylist(id: String!): PlayList!
   getVotes(pagination: VoteArgs!): ListVoteResult!
+  getVote(input: FindByMe!): Vote!
   getArtists(pagination: Pagination): ListArtistResult!
   getArtist(id: String!): Artist!
   getMe: Artist!
@@ -158,6 +159,10 @@ input VoteArgs {
   page: Float = 1
   limit: Float = 10
   search: String = ""
+  musicId: Float!
+}
+
+input FindByMe {
   musicId: Float!
 }
 
@@ -207,7 +212,6 @@ input AddToPlaylistInput {
 input CreateVoteInput {
   musicId: Float!
   rate: Float!
-  userId: Float!
 }
 
 input CreateArtistInput {

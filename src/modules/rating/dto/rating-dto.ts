@@ -9,13 +9,16 @@ export class CreateVoteInput {
 
   @Field(() => Number)
   rate: number;
-
-  @Field(() => Number)
-  userId: number;
 }
 
 @InputType()
 export class VoteArgs extends Pagination {
+  @Field(() => Number)
+  musicId: number;
+}
+
+@InputType()
+export class FindByMe {
   @Field(() => Number)
   musicId: number;
 }

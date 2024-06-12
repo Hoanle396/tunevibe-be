@@ -1,37 +1,42 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Prop } from '@nestjs/mongoose';
 import {
   BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Artist } from './artist.schema';
 import { Music } from './music.schema';
 import { Users } from './user.schema';
+import { Transfer } from '@/decorators/types';
 
 @Entity()
 @ObjectType()
-export class Vote extends BaseEntity {
+export class Transaction extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Field(() => Music)
-  @ManyToOne(() => Music, (m) => m.id)
-  music: Music;
-
-  @Field(() => Number)
-  @Column({ nullable: true, type: 'float' })
-  rate: number;
+  @Field(() => String)
+  @Column({ nullable: false })
+  name: string;
 
   @Field(() => Users)
-  @ManyToOne(() => Users)
+  @ManyToOne(() => Users, (u) => u.id)
   user: Users;
+
+  @Field(() => Music)
+  @ManyToOne(() => Music, (u) => u.id)
+  @JoinTable()
+  music: Music;
+
+  @Field(() => Transfer)
+  @Column({ nullable: false, default: Transfer.Hold })
+  status: Transfer;
 
   @Field(() => Date)
   @CreateDateColumn()

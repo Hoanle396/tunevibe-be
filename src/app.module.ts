@@ -24,6 +24,7 @@ import { PlayList } from './schemas/playlist.schema';
 import { Interaction } from './schemas/interaction.schema';
 import { Play } from './schemas/play.schema';
 import { PlayListMusic } from './schemas/playlist-music.schema';
+import { Transaction } from './schemas/transaction.schema';
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
@@ -48,7 +49,7 @@ import { PlayListMusic } from './schemas/playlist-music.schema';
           PlayList,
           Interaction,
           Play,
-          // PlayListMusic,
+          Transaction
         ],
         synchronize: true,
         logging: true,

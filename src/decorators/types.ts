@@ -20,3 +20,9 @@ export class Meta {
   @Field(() => Number)
   totalItems?: number;
 }
+
+export enum Transfer {
+  OnSale = 'On Sale',
+  Hold = 'Hold',
+  Sold = 'Sold',
+}

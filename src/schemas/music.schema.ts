@@ -55,6 +55,7 @@ export class Music extends BaseEntity {
   @Column({
     nullable: false,
     zerofill: true,
+    type: 'float',
   })
   price: number;
 
