@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
 import {
   BaseEntity,
   Column,
@@ -14,6 +14,9 @@ import { Music } from './music.schema';
 import { Users } from './user.schema';
 import { Transfer } from '@/decorators/types';
 
+registerEnumType(Transfer, {
+  name: 'Transfer',
+});
 @Entity()
 @ObjectType()
 export class Transaction extends BaseEntity {
@@ -21,9 +24,9 @@ export class Transaction extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Field(() => String)
-  @Column({ nullable: false })
-  name: string;
+  @Field(() => Number)
+  @Column({ nullable: false, zerofill: true, type: 'float' })
+  price: number;
 
   @Field(() => Users)
   @ManyToOne(() => Users, (u) => u.id)
@@ -35,7 +38,7 @@ export class Transaction extends BaseEntity {
   music: Music;
 
   @Field(() => Transfer)
-  @Column({ nullable: false, default: Transfer.Hold })
+  @Column({ nullable: false, default: Transfer.Hold, type: 'enum', enum: Transfer})
   status: Transfer;
 
   @Field(() => Date)

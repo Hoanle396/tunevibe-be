@@ -132,7 +132,30 @@ type ListPlayListResult {
   data: [PlayList!]!
 }
 
+type Transaction {
+  id: Float!
+  price: Float!
+  user: Users!
+  music: Music!
+  status: Transfer!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum Transfer {
+  OnSale
+  Hold
+  Sold
+}
+
+type ListTransactionResult {
+  meta: Meta!
+  data: [Transaction!]!
+}
+
 type Query {
+  getTransaction(pagination: Pagination!): ListTransactionResult!
+  getOnSale(pagination: Pagination!): ListTransactionResult!
   getPlaylists(pagination: Pagination): ListPlayListResult!
   getPlaylist(id: String!): PlayList!
   getVotes(pagination: VoteArgs!): ListVoteResult!
@@ -176,6 +199,7 @@ input LoginWithWallet {
 }
 
 type Mutation {
+  createTransaction(input: UpdateTransaction!): Transaction!
   create(createMusicInput: CreateMusicInput!): Music!
   update(input: UpdatePlaylistInput!): PlayList!
   delete(id: String!): Boolean!
@@ -187,6 +211,13 @@ type Mutation {
   updateAlbum(input: UpdateAlbumInput!): Album!
   deleteAlbum(id: String!): Album!
   createUser(createUserInput: CreateUserInput!): LoginResult!
+}
+
+input UpdateTransaction {
+  musicId: Float!
+  price: Float!
+  id: Float
+  status: Transfer!
 }
 
 input CreateMusicInput {

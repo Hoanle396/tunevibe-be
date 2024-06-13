@@ -25,6 +25,7 @@ import { Interaction } from './schemas/interaction.schema';
 import { Play } from './schemas/play.schema';
 import { PlayListMusic } from './schemas/playlist-music.schema';
 import { Transaction } from './schemas/transaction.schema';
+import { TransactionModule } from './modules/transaction/transaction.module';
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
@@ -67,6 +68,7 @@ import { Transaction } from './schemas/transaction.schema';
         RatingModule,
         PlaylistModule,
         InteractionModule,
+        TransactionModule
       ],
     }),
     UsersModule,
@@ -76,6 +78,7 @@ import { Transaction } from './schemas/transaction.schema';
     RatingModule,
     PlaylistModule,
     InteractionModule,
+    TransactionModule,
   ],
 })
 export class AppModule {}
