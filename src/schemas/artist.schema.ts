@@ -40,7 +40,7 @@ export class Artist extends BaseEntity {
   user: Users;
 
   @Field(() => [Album])
-  @OneToMany(() => Album, (post) => post.id)
+  @OneToMany(() => Album, (post) => post.artist)
   @JoinTable()
   albums: Album[];
 

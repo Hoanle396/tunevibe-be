@@ -79,6 +79,7 @@ export class ArtistService {
         where: { id: id },
         relations: {
           user: true,
+          albums: true,
         },
       });
     } catch (error) {
