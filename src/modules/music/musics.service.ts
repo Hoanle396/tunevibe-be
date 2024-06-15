@@ -49,7 +49,9 @@ export class MusicsService {
         skip: (page - 1) * limit,
         relations: {
           album: {
-            artist: true,
+            artist: {
+              user: true,
+            },
           },
           comment: true,
           interaction: true,
@@ -72,7 +74,9 @@ export class MusicsService {
         where: { id: id },
         relations: {
           album: {
-            artist: true,
+            artist: {
+              user: true,
+            },
           },
           comment: true,
           interaction: true,
