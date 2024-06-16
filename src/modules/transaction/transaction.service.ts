@@ -30,7 +30,17 @@ export class TransactionService {
         skip: (page - 1) * limit,
         relations: {
           user: true,
-          music: true,
+          music: {
+            album: {
+              artist: {
+                user: true,
+              },
+            },
+            comment: true,
+            interaction: true,
+            vote: true,
+            play: true,
+          },
         },
       });
       return {
