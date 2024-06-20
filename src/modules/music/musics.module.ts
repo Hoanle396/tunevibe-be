@@ -6,10 +6,12 @@ import { Music } from 'src/schemas/music.schema';
 import { MusicsResolver } from './musics.resolver';
 import { MusicsService } from './musics.service';
 import { Play } from '@/schemas/play.schema';
+import { MusicController } from './musics.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Music, Album, Artist, Play])],
   providers: [MusicsResolver, MusicsService],
+  controllers: [MusicController],
   exports: [MusicsService],
 })
 export class MusicsModule {}
