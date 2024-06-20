@@ -162,6 +162,7 @@ type Query {
   getVote(input: FindByMe!): Vote!
   getArtists(pagination: Pagination): ListArtistResult!
   getArtist(id: String!): Artist!
+  getMusicByArtist(id: String!): [Music!]!
   getMe: Artist!
   getAlbums(pagination: Pagination): ListAlbumResult!
   getAlbum(id: String!): Album!

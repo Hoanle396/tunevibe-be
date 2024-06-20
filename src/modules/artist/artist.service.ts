@@ -6,12 +6,14 @@ import { CreateArtistInput, ListArtistResult } from './dto/artist-dto';
 import { Pagination } from '@/decorators/types';
 import { genMeta } from '@/utils/function';
 import { Users } from '@/schemas/user.schema';
+import { Music } from '@/schemas/music.schema';
 
 @Injectable()
 export class ArtistService {
   constructor(
     @InjectRepository(Artist) private Artist: Repository<Artist>,
-    @InjectRepository(Users) private Users: Repository<Users>
+    @InjectRepository(Users) private Users: Repository<Users>,
+    @InjectRepository(Music) private Music: Repository<Music>
   ) {}
   async createOrUpdate(input: CreateArtistInput): Promise<Artist> {
     try {
@@ -82,6 +84,36 @@ export class ArtistService {
           albums: true,
         },
       });
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
+  }
+
+  async findByArtist(id: number) {
+    try {
+      if (await this.Artist.exists({ where: { user: { id } } })) {
+        return await this.Music.find({
+          where: {
+            album: {
+              artist: {
+                id,
+              },
+            },
+          },
+          relations: {
+            album: {
+              artist: {
+                user: true,
+              },
+            },
+            comment: true,
+            interaction: true,
+            vote: true,
+            play: true,
+          },
+        });
+      }
+      return [];
     } catch (error) {
       throw new BadRequestException(error);
     }
