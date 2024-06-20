@@ -25,7 +25,7 @@ export class TransactionService {
   ): Promise<ListTransactionResult> {
     try {
       const [list, counts] = await this.Transaction.findAndCount({
-        where: { user: { id }, status: Transfer.Hold },
+        where: { user: { id } },
         take: limit,
         skip: (page - 1) * limit,
         relations: {
@@ -106,7 +106,7 @@ export class TransactionService {
         return await newTransaction.save();
       } else {
         transaction.price = price;
-        transaction.status = Transfer.OnSale;
+        transaction.status = input.status;
         return await transaction.save();
       }
     } catch (error) {
