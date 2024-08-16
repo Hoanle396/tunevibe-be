@@ -1,12 +1,12 @@
 import { Pagination } from '@/decorators/types';
+import { Album } from '@/schemas/album.schema';
+import { Play } from '@/schemas/play.schema';
 import { genMeta } from '@/utils/function';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Music } from 'src/schemas/music.schema';
 import { ILike, Repository } from 'typeorm';
 import { CreateMusicInput, ListMusicResult } from './dto/create-music.input';
-import { Play } from '@/schemas/play.schema';
-import { Album } from '@/schemas/album.schema';
 
 @Injectable()
 export class MusicsService {

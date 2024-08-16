@@ -1,16 +1,16 @@
-import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { PlaylistService } from './playlist.service';
+import { Pagination } from '@/decorators/types';
 import { PlayList } from '@/schemas/playlist.schema';
+import { Users } from '@/schemas/user.schema';
+import { NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { UserInputError } from 'apollo-server-express';
 import {
   AddToPlaylistInput,
   CreatePlaylistInput,
   ListPlayListResult,
   UpdatePlaylistInput,
 } from './dto/play-list-dto';
-import { UserInputError } from 'apollo-server-express';
-import { Users } from '@/schemas/user.schema';
-import { NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { Pagination } from '@/decorators/types';
+import { PlaylistService } from './playlist.service';
 
 @Resolver('Playlist')
 export class PlaylistResolver {

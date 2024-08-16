@@ -1,17 +1,17 @@
-import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { ArtistService } from './artist.service';
-import { Artist } from '@/schemas/artist.schema';
-import { CreateArtistInput, ListArtistResult } from './dto/artist-dto';
-import { UserInputError } from 'apollo-server-express';
+import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 import { Pagination } from '@/decorators/types';
+import { Artist } from '@/schemas/artist.schema';
+import { Music } from '@/schemas/music.schema';
+import { Users } from '@/schemas/user.schema';
 import {
   NotFoundException,
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
-import { Users } from '@/schemas/user.schema';
-import { Music } from '@/schemas/music.schema';
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { UserInputError } from 'apollo-server-express';
+import { ArtistService } from './artist.service';
+import { CreateArtistInput, ListArtistResult } from './dto/artist-dto';
 
 @Resolver('Artist')
 export class ArtistResolver {

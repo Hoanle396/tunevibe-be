@@ -12,10 +12,10 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Album } from './album.schema';
-import { Vote } from './vote.schema';
 import { Comment } from './comment.schema';
 import { Interaction } from './interaction.schema';
 import { Play } from './play.schema';
+import { Vote } from './vote.schema';
 
 @Entity()
 @ObjectType()

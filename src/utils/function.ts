@@ -5,9 +5,6 @@ export function genMeta(counts = 0, limit = 10, page = 1): Meta {
     limit,
     page,
     totalItems: counts,
-    totalPages: Number((counts % limit > 0
-      ? counts / limit + 1
-      : counts / limit
-    ).toFixed()),
+    totalPages: Math.ceil(counts / limit),
   };
 }

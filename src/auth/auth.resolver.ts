@@ -1,17 +1,17 @@
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import {
   BadRequestException,
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { Args, Context, Query, Resolver } from '@nestjs/graphql';
-import { Users } from '../schemas/user.schema';
 import {
   LoginResult,
   LoginUserInput,
   LoginWithWallet,
 } from '../modules/users/dto/users-inputs.dto';
+import { Users } from '../schemas/user.schema';
 import { AuthService } from './auth.service';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 type Login = {
   user: Users;

@@ -1,16 +1,15 @@
+import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
+import { Pagination } from '@/decorators/types';
+import { Transaction } from '@/schemas/transaction.schema';
+import { Users } from '@/schemas/user.schema';
+import { UnauthorizedException, UseGuards } from '@nestjs/common';
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { UserInputError } from 'apollo-server-express';
 import {
-  CreateTransaction,
   ListTransactionResult,
   UpdateTransaction,
 } from './dto/transaction.dto';
-import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { TransactionService } from './transaction.service';
-import { UnauthorizedException, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
-import { Transaction } from '@/schemas/transaction.schema';
-import { Users } from '@/schemas/user.schema';
-import { UserInputError } from 'apollo-server-express';
-import { Pagination } from '@/decorators/types';
 
 @Resolver('Transaction')
 export class TransactionResolver {

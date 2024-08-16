@@ -1,16 +1,15 @@
+import { Pagination, Transfer } from '@/decorators/types';
 import { Music } from '@/schemas/music.schema';
 import { Transaction } from '@/schemas/transaction.schema';
 import { Users } from '@/schemas/user.schema';
+import { genMeta } from '@/utils/function';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {
-  CreateTransaction,
   ListTransactionResult,
   UpdateTransaction,
 } from './dto/transaction.dto';
-import { Pagination, Transfer } from '@/decorators/types';
-import { genMeta } from '@/utils/function';
 
 @Injectable()
 export class TransactionService {

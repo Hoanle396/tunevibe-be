@@ -1,31 +1,29 @@
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { join } from 'path';
-import { UsersModule } from './modules/users/users.module';
-import { ConfigService } from './config/config.service';
-import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
 import { ConfigModule } from './config/config.module';
-import { MusicsModule } from './modules/music/musics.module';
+import { ConfigService } from './config/config.service';
 import { AlbumModule } from './modules/album/album.module';
 import { ArtistModule } from './modules/artist/artist.module';
-import { RatingModule } from './modules/rating/rating.module';
-import { PlaylistModule } from './modules/playlist/playlist.module';
 import { InteractionModule } from './modules/interaction/interaction.module';
-import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { Users } from './schemas/user.schema';
-import { Music } from './schemas/music.schema';
+import { MusicsModule } from './modules/music/musics.module';
+import { PlaylistModule } from './modules/playlist/playlist.module';
+import { RatingModule } from './modules/rating/rating.module';
+import { TransactionModule } from './modules/transaction/transaction.module';
+import { UsersModule } from './modules/users/users.module';
 import { Album } from './schemas/album.schema';
 import { Artist } from './schemas/artist.schema';
 import { Bio } from './schemas/bio.schema';
 import { Comment } from './schemas/comment.schema';
-import { Vote } from './schemas/vote.schema';
-import { PlayList } from './schemas/playlist.schema';
 import { Interaction } from './schemas/interaction.schema';
+import { Music } from './schemas/music.schema';
 import { Play } from './schemas/play.schema';
-import { PlayListMusic } from './schemas/playlist-music.schema';
+import { PlayList } from './schemas/playlist.schema';
 import { Transaction } from './schemas/transaction.schema';
-import { TransactionModule } from './modules/transaction/transaction.module';
+import { Users } from './schemas/user.schema';
+import { Vote } from './schemas/vote.schema';
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
@@ -50,7 +48,7 @@ import { TransactionModule } from './modules/transaction/transaction.module';
           PlayList,
           Interaction,
           Play,
-          Transaction
+          Transaction,
         ],
         synchronize: true,
         logging: true,
@@ -68,7 +66,7 @@ import { TransactionModule } from './modules/transaction/transaction.module';
         RatingModule,
         PlaylistModule,
         InteractionModule,
-        TransactionModule
+        TransactionModule,
       ],
     }),
     UsersModule,

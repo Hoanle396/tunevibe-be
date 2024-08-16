@@ -1,6 +1,6 @@
-import { Meta } from "@/decorators/types";
-import { Artist } from "@/schemas/artist.schema";
-import { Field, InputType, ObjectType } from "@nestjs/graphql";
+import { Meta } from '@/decorators/types';
+import { Artist } from '@/schemas/artist.schema';
+import { Field, InputType, ObjectType } from '@nestjs/graphql';
 
 @InputType()
 export class CreateArtistInput {

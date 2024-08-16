@@ -1,3 +1,4 @@
+import { Transfer } from '@/decorators/types';
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
 import {
   BaseEntity,
@@ -5,14 +6,12 @@ import {
   CreateDateColumn,
   Entity,
   JoinTable,
-  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Music } from './music.schema';
 import { Users } from './user.schema';
-import { Transfer } from '@/decorators/types';
 
 registerEnumType(Transfer, {
   name: 'Transfer',
@@ -38,7 +37,12 @@ export class Transaction extends BaseEntity {
   music: Music;
 
   @Field(() => Transfer)
-  @Column({ nullable: false, default: Transfer.Hold, type: 'enum', enum: Transfer})
+  @Column({
+    nullable: false,
+    default: Transfer.Hold,
+    type: 'enum',
+    enum: Transfer,
+  })
   status: Transfer;
 
   @Field(() => Date)

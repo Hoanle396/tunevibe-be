@@ -1,12 +1,12 @@
+import { Pagination } from '@/decorators/types';
 import { Artist } from '@/schemas/artist.schema';
+import { Music } from '@/schemas/music.schema';
+import { Users } from '@/schemas/user.schema';
+import { genMeta } from '@/utils/function';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ILike, Repository } from 'typeorm';
 import { CreateArtistInput, ListArtistResult } from './dto/artist-dto';
-import { Pagination } from '@/decorators/types';
-import { genMeta } from '@/utils/function';
-import { Users } from '@/schemas/user.schema';
-import { Music } from '@/schemas/music.schema';
 
 @Injectable()
 export class ArtistService {

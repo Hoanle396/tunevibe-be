@@ -1,8 +1,4 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
-import * as mongoose from 'mongoose';
-import { Users } from './user.schema';
 import {
   BaseEntity,
   Column,
@@ -16,8 +12,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Album } from './album.schema';
-
-export type ArtistDocument = Artist & Document;
+import { Users } from './user.schema';
 
 @Entity()
 @ObjectType()

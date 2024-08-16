@@ -1,6 +1,5 @@
 import { Meta } from '@/decorators/types';
 import { Album } from '@/schemas/album.schema';
-import { Music } from '@/schemas/music.schema';
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 
 @InputType()

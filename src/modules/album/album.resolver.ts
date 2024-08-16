@@ -1,16 +1,16 @@
-import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { AlbumService } from './album.service';
+import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
+import { Pagination } from '@/decorators/types';
 import { Album } from '@/schemas/album.schema';
+import { Users } from '@/schemas/user.schema';
+import { NotFoundException, UseGuards } from '@nestjs/common';
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { UserInputError } from 'apollo-server-express';
+import { AlbumService } from './album.service';
 import {
   CreateAlbumInput,
   ListAlbumResult,
   UpdateAlbumInput,
 } from './dto/album-dto';
-import { UserInputError } from 'apollo-server-express';
-import { Pagination } from '@/decorators/types';
-import { NotFoundException, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
-import { Users } from '@/schemas/user.schema';
 
 @Resolver('Album')
 export class AlbumResolver {

@@ -1,4 +1,8 @@
+import { Pagination } from '@/decorators/types';
 import { Album } from '@/schemas/album.schema';
+import { Artist } from '@/schemas/artist.schema';
+import { Users } from '@/schemas/user.schema';
+import { genMeta } from '@/utils/function';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, ILike, Repository } from 'typeorm';
@@ -7,10 +11,6 @@ import {
   ListAlbumResult,
   UpdateAlbumInput,
 } from './dto/album-dto';
-import { Artist } from '@/schemas/artist.schema';
-import { Pagination } from '@/decorators/types';
-import { genMeta } from '@/utils/function';
-import { Users } from '@/schemas/user.schema';
 
 @Injectable()
 export class AlbumService {
